@@ -9,7 +9,7 @@
         <style>
             :root{--y:#ffc21a;--w:#fff;--b:#050607;--m:#c6ccd5}
             *{box-sizing:border-box}
-            body{margin:0;background:var(--b);color:var(--w);font:14px Poppins,sans-serif}
+            html, body{margin:0;background:var(--b);color:var(--w);font:14px Poppins,sans-serif;overflow-x:hidden}
             .wrap{width:min(1510px,calc(100% - 80px));margin:auto}
             /* Sticky Header */
             .header-sticky{position:sticky;top:0;z-index:100;background:rgba(5,6,7,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #ffffff18;transition:padding .3s ease}
@@ -20,6 +20,39 @@
             .links a{color:#fff;text-decoration:none;transition:color .2s}
             .links a:hover{color:var(--y)}
             .call{border:1px solid var(--y);border-radius:28px;color:var(--y);text-decoration:none;padding:11px 22px;font-weight:700}
+            
+            /* Main Page Blur Wrapper when Mobile Menu is Active */
+            body.nav-open main,
+            body.nav-open .section,
+            body.nav-open .site-footer {
+                filter: blur(8px);
+                -webkit-filter: blur(8px);
+                pointer-events: none;
+                user-select: none;
+                transition: filter .3s ease;
+            }
+            main, .section, .site-footer {
+                transition: filter .3s ease;
+            }
+
+            /* Hamburger Toggle Button */
+            .nav-toggle{display:none;background:none;border:none;color:var(--y);font-size:24px;cursor:pointer;padding:8px;line-height:1;position:relative;z-index:1002}
+            .nav-toggle:hover{color:#fff}
+            .nav-backdrop{
+                position:fixed;
+                inset:0;
+                background:rgba(0,0,0,.65);
+                backdrop-filter:blur(8px);
+                -webkit-backdrop-filter:blur(8px);
+                z-index:998;
+                opacity:0;
+                pointer-events:none;
+                transition:opacity .3s ease;
+            }
+            .nav-backdrop.active{
+                opacity:1;
+                pointer-events:auto;
+            }
             
             /* Banner slider base */
             .banner-slider{position:relative;overflow:hidden}
@@ -55,6 +88,18 @@
 
             @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
             @keyframes glow{from{text-shadow:0 0 0 #ffc21a00}to{text-shadow:0 0 24px #ffc21a66}}
+            
+            /* Scroll Reveal Animations (Repeats on scrolling up and down) */
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px);
+                transition: opacity .65s cubic-bezier(.165,.84,.44,1), transform .65s cubic-bezier(.165,.84,.44,1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
             
             /* Products & Services Section - Premium Natural Showcase */
             .section{padding:90px 0;background:#05070a}
@@ -177,81 +222,122 @@
 
             @media(max-width:860px){
                 .wrap{width:calc(100% - 32px)}
-                .links{display:none}
-                .nav{height:76px}
-                .brand img{height:58px}
-                .call{padding:9px 18px;font-size:12px}
+                .nav-toggle{display:block;order:3}
+                .nav .call{order:2;margin-left:auto;margin-right:12px;padding:8px 14px;font-size:12px}
+                .links{
+                    position:fixed;
+                    top:0;
+                    right:0;
+                    transform:translateX(100%);
+                    visibility:hidden;
+                    width:270px;
+                    height:100vh;
+                    background:#080b0f;
+                    border-left:1px solid #ffffff18;
+                    flex-direction:column;
+                    gap:0;
+                    padding:80px 0 30px;
+                    z-index:1000;
+                    transition:transform .3s ease, visibility .3s ease;
+                    box-shadow:-10px 0 30px rgba(0,0,0,0.9);
+                }
+                .links.active{
+                    transform:translateX(0);
+                    visibility:visible;
+                }
+                .links a{
+                    display:block;
+                    padding:16px 26px;
+                    border-bottom:1px solid #ffffff0a;
+                    font-size:16px;
+                    font-weight:600;
+                    color:#fff;
+                }
+                .links a:hover{
+                    background:#ffc21a15;
+                    color:var(--y);
+                }
+                .nav{height:72px}
+                .brand img{height:54px}
                 
-                /* Hero / Promo Mobile Layout */
+                /* Hero / Promo Mobile Layout with Visible Product Visuals */
                 .promo{
                     min-height:auto;
-                    padding:50px 0 65px;
-                    background-position:center bottom !important;
-                    background-size:85% auto !important;
+                    padding:32px 0 20px;
+                    background-position:center bottom 40px !important;
+                    background-size:280px auto !important;
                     display:flex;
                     flex-direction:column;
                     justify-content:flex-start;
-                    align-items:flex-start;
+                    align-items:center;
+                    text-align:center;
                 }
                 .promo:before{
-                    content:'';
-                    position:absolute;
-                    inset:0;
-                    background:linear-gradient(180deg, rgba(5,6,7,0.92) 0%, rgba(5,6,7,0.7) 45%, rgba(5,6,7,0.85) 100%);
-                    z-index:1;
-                    pointer-events:none;
+                    display:none; /* Remove heavy dark overlay so background products pop clearly */
                 }
                 .hero-fan:after{
-                    background:linear-gradient(180deg, rgba(5,6,7,0.95) 0%, rgba(5,6,7,0.75) 50%, rgba(5,6,7,0.92) 100%);
+                    display:none;
                 }
                 .promo-content{
                     max-width:100%;
                     padding:0;
-                    margin-bottom:260px; /* Space for the hero product image at bottom */
+                    margin:0 auto 230px; /* Precise height reservation allowing the product photo to be clearly visible */
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    text-align:center;
+                    position:relative;
+                    z-index:3;
                 }
-                .promo-kicker{font-size:11px;margin-bottom:10px}
+                .promo-kicker{font-size:11px;margin-bottom:8px;text-align:center}
                 .promo h2{
-                    font-size:clamp(32px,8vw,44px);
-                    line-height:1.15;
+                    font-size:clamp(26px,6.8vw,36px);
+                    line-height:1.2;
                     white-space:normal;
-                    margin:0 0 14px;
+                    margin:0 auto 12px;
+                    text-align:center;
+                    text-shadow:0 2px 12px rgba(0,0,0,0.9);
                 }
                 .promo h2 span{white-space:normal}
                 .promo p{
-                    font-size:15px;
-                    line-height:1.6;
-                    max-width:100%;
-                    margin:0 0 22px;
+                    font-size:14px;
+                    line-height:1.55;
+                    max-width:440px;
+                    margin:0 auto 18px;
+                    text-align:center;
+                    text-shadow:0 1px 8px rgba(0,0,0,0.85);
+                }
+                .promo-btn{
+                    margin:0 auto;
+                    padding:10px 22px;
+                    font-size:13px;
                 }
                 .promo-tag{display:none}
                 
-                .slider-arrow{
-                    width:38px;
-                    height:38px;
-                    font-size:16px;
-                    top:auto;
-                    bottom:18px;
-                    transform:none;
-                }
-                #slidePrev{left:16px}
-                #slideNext{right:16px}
-                .slider-dots{bottom:26px}
-                .slider-dots .dot{width:8px;height:8px}
-                .slider-dots .dot.active{width:22px}
+                .slider-arrow{display:none}
+                .slider-dots{bottom:12px}
+                .slider-dots .dot{width:7px;height:7px}
+                .slider-dots .dot.active{width:18px}
             }
 
             @media(max-width:480px){
                 .wrap{width:calc(100% - 24px)}
-                .nav{height:70px}
-                .brand img{height:50px}
-                .call{padding:8px 14px;font-size:11px}
-                .promo{padding:40px 0 60px;background-size:95% auto !important}
-                .promo-content{margin-bottom:210px}
-                .promo h2{font-size:clamp(28px,7.5vw,36px)}
-                .promo p{font-size:14px}
-                .promo-btn{padding:11px 20px;font-size:13px}
-                .slider-arrow{width:34px;height:34px;font-size:14px;bottom:14px}
-                .slider-dots{bottom:22px}
+                .nav{height:66px}
+                .nav-toggle{font-size:22px;padding:6px}
+                .links{top:0;height:100vh;width:240px;padding-top:72px}
+                .brand img{height:46px}
+                .nav .call{padding:6px 12px;font-size:11px;margin-right:8px}
+                .promo{
+                    padding:28px 0 16px;
+                    background-size:240px auto !important;
+                    background-position:center bottom 35px !important;
+                }
+                .promo-content{margin:0 auto 195px}
+                .promo h2{font-size:clamp(24px,6.5vw,30px);margin-bottom:10px}
+                .promo p{font-size:13px;line-height:1.5;margin-bottom:16px}
+                .promo-btn{padding:9px 18px;font-size:12px}
+                .slider-arrow{display:none}
+                .slider-dots{bottom:10px}
             }
         </style>
 </head>
@@ -261,13 +347,15 @@
             <a class="brand" href="#top" aria-label="Arora Agency">
                 <img src="content/images/logo/logo.png" alt="Arora Agency">
             </a>
-            <nav class="links">
+            <nav id="navLinks" class="links">
                 <a href="#brands">Products &amp; Services</a>
                 <a href="#gallery">Gallery</a>
                 <a href="#contact">Contact Us</a>
             </nav>
             <a class="call" href="tel:+919646464604"><i class="fa-solid fa-phone" style="margin-right:6px;"></i> Call Now</a>
+            <button id="navToggle" class="nav-toggle" aria-label="Toggle Navigation"><i class="fa-solid fa-bars"></i></button>
         </div>
+        <div id="navBackdrop" class="nav-backdrop"></div>
     </header>
     <main id="top" class="banner-slider">
         <section class="promo hero-fan banner-slide active">
@@ -312,13 +400,13 @@
     </main>
     <section id="brands" class="section">
         <div class="wrap">
-            <div class="section-header">
+            <div class="section-header reveal-on-scroll">
                 <h2>Products &amp; Services</h2>
                 <p>Explore our premium portfolio of authorised brands bringing enduring quality, durability, and elegance across home, kitchen, and lifestyle.</p>
             </div>
             <div id="productGrid" class="product-grid">
                 <!-- Row 1 Initial Products -->
-                <article class="product-card">
+                <article class="product-card reveal-on-scroll">
                     <div class="product-img-box">
                         <img src="content/images/products/01_havells_fans.jpg" alt="Havells Fans">
                     </div>
@@ -329,7 +417,7 @@
                     </div>
                 </article>
 
-                <article class="product-card">
+                <article class="product-card reveal-on-scroll">
                     <div class="product-img-box">
                         <img src="content/images/products/02_havells_appliances.jpg" alt="Havells Appliances">
                     </div>
@@ -340,7 +428,7 @@
                     </div>
                 </article>
 
-                <article class="product-card">
+                <article class="product-card reveal-on-scroll">
                     <div class="product-img-box">
                         <img src="content/images/products/03_prabha_steel.jpeg" alt="Prabha Steel">
                     </div>
@@ -357,25 +445,25 @@
     <!-- Gallery Section -->
     <section id="gallery" class="gallery-section">
         <div class="wrap">
-            <div class="section-header">
+            <div class="section-header reveal-on-scroll">
                 <h2>Product Gallery</h2>
                 <p>A visual showcase of our premium cookware, glassware, appliances, and luxury home living collections.</p>
             </div>
             <div id="galleryGrid" class="gallery-grid">
                 <!-- Initial items loaded; remaining items loaded dynamically with skeleton shimmer -->
-                <div class="gallery-item">
+                <div class="gallery-item reveal-on-scroll">
                     <img src="content/images/gallery/gallery_01.jpeg" alt="Arora Agency Showcase">
                     <div class="gallery-overlay"><span>Cookware &amp; Steel</span></div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item reveal-on-scroll">
                     <img src="content/images/gallery/gallery_02.jpg" alt="Premium Kitchen Collection">
                     <div class="gallery-overlay"><span>Kitchen Essentials</span></div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item reveal-on-scroll">
                     <img src="content/images/gallery/gallery_03.jpg" alt="Dining and Tableware">
                     <div class="gallery-overlay"><span>Tableware</span></div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item reveal-on-scroll">
                     <img src="content/images/gallery/gallery_04.jpg" alt="Glassware Collection">
                     <div class="gallery-overlay"><span>Glassware</span></div>
                 </div>
@@ -386,12 +474,12 @@
     <!-- Contact Us Section -->
     <section id="contact" class="contact-section">
         <div class="wrap">
-            <div class="section-header">
+            <div class="section-header reveal-on-scroll">
                 <h2>Contact Us</h2>
                 <p>Have questions about dealership, distribution, or bulk requirements? Get in touch with our team in Ludhiana.</p>
             </div>
             <div class="contact-wrap">
-                <div class="contact-info-card">
+                <div class="contact-info-card reveal-on-scroll">
                     <h3>Get In Touch</h3>
                     <p>We are authorized distributors of premium domestic brands. Reach out directly for dealer inquiries, product availability, or catalog requests.</p>
                     
@@ -428,7 +516,7 @@
                     </div>
                 </div>
 
-                <div class="contact-form-card">
+                <div class="contact-form-card reveal-on-scroll">
                     <h3>Send An Enquiry</h3>
                     <form onsubmit="event.preventDefault(); alert('Thank you! Your enquiry has been received. We will contact you shortly.'); this.reset();">
                         <div class="form-group">
@@ -596,8 +684,7 @@
 
         function createProductCard(p) {
             const article = document.createElement("article");
-            article.className = "product-card";
-            article.style.animation = "cardFadeIn .6s cubic-bezier(.165,.84,.44,1) both";
+            article.className = "product-card reveal-on-scroll";
             article.innerHTML = `
                 <div class="product-img-box">
                     <img src="${p.image}" alt="${p.title}" loading="lazy">
@@ -608,6 +695,9 @@
                     <a class="product-btn" href="tel:+919646464604">Enquire Now &rarr;</a>
                 </div>
             `;
+            if (typeof scrollObserver !== "undefined") {
+                scrollObserver.observe(article);
+            }
             return article;
         }
 
@@ -688,12 +778,14 @@
 
             batch1.forEach((item, i) => {
                 const el = document.createElement("div");
-                el.className = "gallery-item";
-                el.style.animation = "cardFadeIn .6s cubic-bezier(.165,.84,.44,1) both";
+                el.className = "gallery-item reveal-on-scroll";
                 el.innerHTML = `
                     <img src="${item.img}" alt="${item.title}" loading="lazy">
                     <div class="gallery-overlay"><span>${item.title}</span></div>
                 `;
+                if (typeof scrollObserver !== "undefined") {
+                    scrollObserver.observe(el);
+                }
                 galleryGrid.replaceChild(el, batch1Skeletons[i]);
             });
 
@@ -709,12 +801,14 @@
 
             batch2.forEach((item, i) => {
                 const el = document.createElement("div");
-                el.className = "gallery-item";
-                el.style.animation = "cardFadeIn .6s cubic-bezier(.165,.84,.44,1) both";
+                el.className = "gallery-item reveal-on-scroll";
                 el.innerHTML = `
                     <img src="${item.img}" alt="${item.title}" loading="lazy">
                     <div class="gallery-overlay"><span>${item.title}</span></div>
                 `;
+                if (typeof scrollObserver !== "undefined") {
+                    scrollObserver.observe(el);
+                }
                 galleryGrid.replaceChild(el, batch2Skeletons[i]);
             });
         }
@@ -803,6 +897,51 @@
             if (e.key === "ArrowRight") showNextImage();
             if (e.key === "ArrowLeft") showPrevImage();
         });
+
+        // --- Mobile Navigation Toggle ---
+        const navToggle = document.getElementById("navToggle");
+        const navLinks = document.getElementById("navLinks");
+        const navBackdrop = document.getElementById("navBackdrop");
+
+        function toggleMobileNav() {
+            const isOpen = navLinks.classList.toggle("active");
+            navBackdrop.classList.toggle("active", isOpen);
+            document.body.classList.toggle("nav-open", isOpen);
+            navToggle.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+            document.body.style.overflow = isOpen ? "hidden" : "";
+        }
+
+        function closeMobileNav() {
+            navLinks.classList.remove("active");
+            navBackdrop.classList.remove("active");
+            document.body.classList.remove("nav-open");
+            navToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            document.body.style.overflow = "";
+        }
+
+        if (navToggle) {
+            navToggle.addEventListener("click", toggleMobileNav);
+            navBackdrop.addEventListener("click", closeMobileNav);
+            navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMobileNav));
+        }
+
+        // --- Bidirectional Scroll Reveal Observer ---
+        // Animates items as they enter the viewport; resets when they scroll out so animation re-triggers on scroll up or down
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                } else {
+                    entry.target.classList.remove("is-visible");
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: "0px 0px -40px 0px"
+        });
+
+        // Observe all existing elements with .reveal-on-scroll
+        document.querySelectorAll(".reveal-on-scroll").forEach(el => scrollObserver.observe(el));
     </script>
 </body>
 </html>

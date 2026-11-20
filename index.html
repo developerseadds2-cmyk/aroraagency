@@ -1,0 +1,808 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Arora Agency | Premium Products</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <style>
+            :root{--y:#ffc21a;--w:#fff;--b:#050607;--m:#c6ccd5}
+            *{box-sizing:border-box}
+            body{margin:0;background:var(--b);color:var(--w);font:14px Poppins,sans-serif}
+            .wrap{width:min(1510px,calc(100% - 80px));margin:auto}
+            /* Sticky Header */
+            .header-sticky{position:sticky;top:0;z-index:100;background:rgba(5,6,7,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #ffffff18;transition:padding .3s ease}
+            .nav{height:95px;display:flex;align-items:center;justify-content:space-between;position:relative}
+            .brand{display:flex;align-items:center;text-decoration:none}
+            .brand img{height:80px;width:auto;border-radius:50%;object-fit:contain;display:block;transition:height .3s ease}
+            .links{display:flex;gap:45px}
+            .links a{color:#fff;text-decoration:none;transition:color .2s}
+            .links a:hover{color:var(--y)}
+            .call{border:1px solid var(--y);border-radius:28px;color:var(--y);text-decoration:none;padding:11px 22px;font-weight:700}
+            
+            /* Banner slider base */
+            .banner-slider{position:relative;overflow:hidden}
+            .banner-slide{display:none!important}
+            .banner-slide.active{display:flex!important}
+            
+            /* Promo Slides Base */
+            .promo{min-height:690px;position:relative;display:flex;align-items:center;overflow:hidden;background:#090909 url('content/images/Premium Prabha Pressure Cooker Collection.png') right center/contain no-repeat;border-top:1px solid #ffc21a22}
+            .promo-content{position:relative;z-index:2;max-width:600px;padding:45px 0}
+            .promo-kicker{color:#ffc21a;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:700;margin-bottom:15px}
+            .promo h2{font-size:clamp(38px,4.5vw,62px);line-height:1.08;margin:0 0 17px;letter-spacing:1px;white-space:nowrap}
+            .promo h2 span{display:block;color:#ffc21a;white-space:nowrap}
+            .promo p{color:#c6ccd5;font-size:16px;line-height:1.7;margin:0 0 27px}
+            .promo-btn{display:inline-block;background:#ffc21a;color:#070809;text-decoration:none;padding:13px 22px;border-radius:25px;font-weight:700}
+            .promo-tag{position:absolute;right:7%;bottom:35px;z-index:2;color:#ffc21a;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+            
+            /* Slide 1: Havells Fans */
+            .hero-fan{background-image:url('content/images/Matte Black Ceiling Fan with Golden Waves.png');background-position:right center;background-size:contain;background-repeat:no-repeat}
+            .hero-fan:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,7,.98) 0%,rgba(5,6,7,.88) 36%,rgba(5,6,7,.25) 70%,rgba(5,6,7,.05) 100%),linear-gradient(0deg,rgba(5,6,7,.5),transparent 45%)}
+
+            /* Slide 3: Dinnerware */
+            .dinner{background-image:url('content/images/Elegant Floral Dinnerware on Dark Luxe Background.png');background-position:right center;background-size:contain;background-repeat:no-repeat}
+
+            /* Slider Arrow Controls & Dots */
+            .slider-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:25;width:48px;height:48px;border-radius:50%;background:rgba(8,10,13,.8);border:2px solid var(--y);color:var(--y);font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;user-select:none}
+            .slider-arrow:hover{background:var(--y);color:#070809}
+            #slidePrev{left:25px}
+            #slideNext{right:25px}
+
+            .slider-dots{position:absolute;z-index:25;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px}
+            .slider-dots .dot{width:10px;height:10px;padding:0;border:0;border-radius:50%;background:#555;cursor:pointer;transition:.3s}
+            .slider-dots .dot.active{width:26px;border-radius:8px;background:var(--y)}
+
+            @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+            @keyframes glow{from{text-shadow:0 0 0 #ffc21a00}to{text-shadow:0 0 24px #ffc21a66}}
+            
+            /* Products & Services Section - Premium Natural Showcase */
+            .section{padding:90px 0;background:#05070a}
+            .section-header{text-align:center;margin-bottom:60px}
+            .section-header h2{color:var(--y);font-size:clamp(30px,4.5vw,46px);margin:0 0 14px;letter-spacing:1px;font-weight:800}
+            .section-header p{color:var(--m);font-size:16px;max-width:680px;margin:auto;line-height:1.6}
+            
+            .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:32px;align-items:stretch}
+            .product-card{border-radius:20px;overflow:hidden;background:#0d1117;border:1px solid #ffffff14;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;display:flex;flex-direction:column}
+            .product-card:hover{transform:translateY(-8px);border-color:var(--y);box-shadow:0 18px 40px rgba(0,0,0,.75),0 0 25px rgba(255,194,26,.18)}
+            
+            /* Enhanced, unclipped image container */
+            .product-img-box{position:relative;width:100%;height:380px;background:#080b0f;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+            .product-img-box img{width:100%;height:100%;object-fit:contain;object-position:center;transition:transform .4s ease,opacity .4s ease}
+            .product-card:hover .product-img-box img{transform:scale(1.05)}
+            
+            .product-info{padding:26px;display:flex;flex-direction:column;flex-grow:1;justify-content:space-between;background:#0d1117;border-top:1px solid #ffffff0a}
+            .product-info h3{font-size:19px;font-weight:700;color:#fff;margin:0 0 10px}
+            .product-info p{font-size:14px;color:var(--m);line-height:1.6;margin:0 0 22px}
+            .product-btn{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;color:#070809;background:var(--y);padding:10px 22px;border-radius:22px;text-decoration:none;font-weight:700;font-size:13px;transition:transform .2s,box-shadow .2s}
+            .product-btn:hover{transform:translateX(3px);box-shadow:0 4px 15px rgba(255,194,26,.4)}
+
+            /* Skeleton Loading State */
+            .skeleton-card{animation:cardFadeIn .6s ease both}
+            .skeleton-img{background:linear-gradient(90deg,#0d1219 25%,#161e2b 50%,#0d1219 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px;width:100%;height:100%}
+            .skeleton-line{background:linear-gradient(90deg,#0d1219 25%,#161e2b 50%,#0d1219 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px}
+            .skeleton-title{height:22px;width:65%;margin-bottom:12px}
+            .skeleton-text{height:14px;width:95%;margin-bottom:8px}
+            .skeleton-text.short{width:70%;margin-bottom:24px}
+            .skeleton-btn{height:36px;width:125px;border-radius:20px}
+
+            /* Gallery Section */
+            .gallery-section{padding:90px 0;background:#090d14;border-top:1px solid #ffffff0d}
+            .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+            .gallery-item{position:relative;border-radius:16px;overflow:hidden;height:260px;background:#06080c;border:1px solid #ffffff12;cursor:pointer;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+            .gallery-item:hover{transform:translateY(-6px);border-color:var(--y);box-shadow:0 15px 30px rgba(0,0,0,.8),0 0 20px rgba(255,194,26,.2)}
+            .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+            .gallery-item:hover img{transform:scale(1.08)}
+            .gallery-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(5,7,10,.85) 100%);opacity:0;transition:opacity .3s ease;display:flex;align-items:flex-end;padding:18px}
+            .gallery-item:hover .gallery-overlay{opacity:1}
+            .gallery-overlay span{color:var(--y);font-weight:700;font-size:13px;letter-spacing:.5px}
+            .gallery-skeleton{height:260px;border-radius:16px;background:linear-gradient(90deg,#0a0e14 25%,#151c27 50%,#0a0e14 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border:1px solid #ffffff0d}
+
+            /* Lightbox Modal */
+            .lightbox{position:fixed;inset:0;background:rgba(3,4,6,.92);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center;padding:30px;opacity:0;transition:opacity .3s ease}
+            .lightbox.active{display:flex;opacity:1}
+            .lightbox-box{position:relative;max-width:92vw;max-height:88vh;display:flex;flex-direction:column;align-items:center}
+            .lightbox-img{max-width:100%;max-height:80vh;border-radius:12px;border:2px solid #ffffff1a;box-shadow:0 25px 60px rgba(0,0,0,.9),0 0 35px rgba(255,194,26,.2);object-fit:contain}
+            .lightbox-caption{color:var(--y);font-size:16px;font-weight:700;margin-top:14px;letter-spacing:1px;text-align:center}
+            .lightbox-close{position:absolute;top:-45px;right:0;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;transition:color .2s}
+            .lightbox-close:hover{color:var(--y)}
+            .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,10,13,.8);border:1px solid var(--y);color:var(--y);width:46px;height:46px;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+            .lightbox-nav:hover{background:var(--y);color:#070809}
+            .lightbox-prev{left:-60px}
+            .lightbox-next{right:-60px}
+            @media(max-width:768px){
+                .lightbox-prev{left:10px}
+                .lightbox-next{right:10px}
+                .lightbox-close{top:-40px;right:10px}
+            }
+
+            /* Contact Us Section */
+            .contact-section{padding:90px 0;background:#05070a;border-top:1px solid #ffffff0d}
+            .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+            .contact-info-card{background:#0c1017;border:1px solid #ffffff14;border-radius:20px;padding:40px;position:relative}
+            .contact-info-card h3{color:#fff;font-size:24px;margin:0 0 16px;font-weight:700}
+            .contact-info-card p{color:var(--m);font-size:15px;line-height:1.7;margin:0 0 30px}
+            .contact-item{display:flex;gap:18px;margin-bottom:24px;align-items:flex-start}
+            .contact-icon{width:46px;height:46px;border-radius:50%;background:#ffc21a1a;border:1px solid var(--y);color:var(--y);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+            .contact-item-text b{display:block;color:#fff;font-size:15px;margin-bottom:4px}
+            .contact-item-text span, .contact-item-text a{color:var(--m);font-size:14px;text-decoration:none;transition:color .2s}
+            .contact-item-text a:hover{color:var(--y)}
+            .social-ctas{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+            .btn-wa{background:#25D366;color:#fff;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:opacity .2s}
+            .btn-wa:hover{opacity:.9}
+            
+            .contact-form-card{background:#0c1017;border:1px solid #ffffff14;border-radius:20px;padding:40px}
+            .contact-form-card h3{color:#fff;font-size:24px;margin:0 0 20px;font-weight:700}
+            .form-group{margin-bottom:20px}
+            .form-group label{display:block;color:var(--m);font-size:13px;font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+            .form-control{width:100%;padding:13px 18px;background:#06080c;border:1px solid #ffffff18;border-radius:10px;color:#fff;font-family:inherit;font-size:14px;transition:border-color .2s,box-shadow .2s;outline:none}
+            .form-control:focus{border-color:var(--y);box-shadow:0 0 10px rgba(255,194,26,.25)}
+            textarea.form-control{min-height:120px;resize:vertical}
+            .submit-btn{width:100%;background:var(--y);color:#070809;padding:14px;border-radius:28px;border:none;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .2s,box-shadow .2s}
+            .submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,194,26,.4)}
+
+            /* Footer */
+            .site-footer{background:#040507;border-top:1px solid #ffffff12;padding:60px 0 0}
+            .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:40px;padding-bottom:50px}
+            .footer-col h4{color:var(--y);font-size:16px;margin:0 0 20px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+            .footer-col p{color:var(--m);font-size:14px;line-height:1.7;margin:0 0 20px}
+            .footer-links{list-style:none;padding:0;margin:0}
+            .footer-links li{margin-bottom:12px}
+            .footer-links a{color:var(--m);text-decoration:none;font-size:14px;transition:color .2s}
+            .footer-links a:hover{color:var(--y);padding-left:4px}
+            .footer-bottom{border-top:1px solid #ffffff10;padding:24px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:13px;color:#858f9e}
+            .footer-dev{color:var(--m)}
+            .footer-dev a{color:var(--y);text-decoration:none;font-weight:700;transition:color .2s}
+            .footer-dev a:hover{text-decoration:underline}
+
+            @media(max-width:960px){
+                .contact-wrap{grid-template-columns:1fr}
+                .footer-grid{grid-template-columns:1fr 1fr}
+            }
+            @media(max-width:600px){
+                .footer-grid{grid-template-columns:1fr}
+                .footer-bottom{flex-direction:column;text-align:center}
+            }
+
+            @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+            @keyframes cardFadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+            @media(max-width:1024px){
+                .wrap{width:calc(100% - 48px)}
+                .promo{min-height:580px;background-size:contain}
+                .promo-content{max-width:500px;padding:35px 0}
+                .promo h2{font-size:clamp(32px,4vw,48px)}
+                .promo p{font-size:15px}
+            }
+
+            @media(max-width:860px){
+                .wrap{width:calc(100% - 32px)}
+                .links{display:none}
+                .nav{height:76px}
+                .brand img{height:58px}
+                .call{padding:9px 18px;font-size:12px}
+                
+                /* Hero / Promo Mobile Layout */
+                .promo{
+                    min-height:auto;
+                    padding:50px 0 65px;
+                    background-position:center bottom !important;
+                    background-size:85% auto !important;
+                    display:flex;
+                    flex-direction:column;
+                    justify-content:flex-start;
+                    align-items:flex-start;
+                }
+                .promo:before{
+                    content:'';
+                    position:absolute;
+                    inset:0;
+                    background:linear-gradient(180deg, rgba(5,6,7,0.92) 0%, rgba(5,6,7,0.7) 45%, rgba(5,6,7,0.85) 100%);
+                    z-index:1;
+                    pointer-events:none;
+                }
+                .hero-fan:after{
+                    background:linear-gradient(180deg, rgba(5,6,7,0.95) 0%, rgba(5,6,7,0.75) 50%, rgba(5,6,7,0.92) 100%);
+                }
+                .promo-content{
+                    max-width:100%;
+                    padding:0;
+                    margin-bottom:260px; /* Space for the hero product image at bottom */
+                }
+                .promo-kicker{font-size:11px;margin-bottom:10px}
+                .promo h2{
+                    font-size:clamp(32px,8vw,44px);
+                    line-height:1.15;
+                    white-space:normal;
+                    margin:0 0 14px;
+                }
+                .promo h2 span{white-space:normal}
+                .promo p{
+                    font-size:15px;
+                    line-height:1.6;
+                    max-width:100%;
+                    margin:0 0 22px;
+                }
+                .promo-tag{display:none}
+                
+                .slider-arrow{
+                    width:38px;
+                    height:38px;
+                    font-size:16px;
+                    top:auto;
+                    bottom:18px;
+                    transform:none;
+                }
+                #slidePrev{left:16px}
+                #slideNext{right:16px}
+                .slider-dots{bottom:26px}
+                .slider-dots .dot{width:8px;height:8px}
+                .slider-dots .dot.active{width:22px}
+            }
+
+            @media(max-width:480px){
+                .wrap{width:calc(100% - 24px)}
+                .nav{height:70px}
+                .brand img{height:50px}
+                .call{padding:8px 14px;font-size:11px}
+                .promo{padding:40px 0 60px;background-size:95% auto !important}
+                .promo-content{margin-bottom:210px}
+                .promo h2{font-size:clamp(28px,7.5vw,36px)}
+                .promo p{font-size:14px}
+                .promo-btn{padding:11px 20px;font-size:13px}
+                .slider-arrow{width:34px;height:34px;font-size:14px;bottom:14px}
+                .slider-dots{bottom:22px}
+            }
+        </style>
+</head>
+<body>
+    <header class="header-sticky">
+        <div class="nav wrap">
+            <a class="brand" href="#top" aria-label="Arora Agency">
+                <img src="content/images/logo/logo.png" alt="Arora Agency">
+            </a>
+            <nav class="links">
+                <a href="#brands">Products &amp; Services</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#contact">Contact Us</a>
+            </nav>
+            <a class="call" href="tel:+919646464604"><i class="fa-solid fa-phone" style="margin-right:6px;"></i> Call Now</a>
+        </div>
+    </header>
+    <main id="top" class="banner-slider">
+        <section class="promo hero-fan banner-slide active">
+            <div class="wrap">
+                <div class="promo-content">
+                    <div class="promo-kicker">Havells · Premium Fans</div>
+                    <h2>Powering better
+                        <span>everyday living.</span>
+                    </h2>
+                    <p>Discover trusted home, kitchen and lifestyle products from Arora Agency — authorised distributors bringing quality, performance and lasting value to homes and businesses across Ludhiana.</p>
+                    <a class="promo-btn" href="#brands">Explore Havells Fans →</a>
+                </div>
+            </div>
+            <div class="promo-tag">Havells fans · premium performance</div>
+        </section>
+        <section class="promo banner-slide">
+            <div class="wrap">
+                <div class="promo-content">
+                    <div class="promo-kicker">Prabha Steel · Premium cookware</div>
+                    <h2>Cook with confidence
+                        <span>Built for every kitchen.</span>
+                    </h2>
+                    <p>Discover dependable pressure cookers and steel cookware from Prabha — designed for everyday performance, durability and better cooking.</p>
+                    <a class="promo-btn" href="#contact">Explore Prabha Steel →</a>
+                </div>
+            </div>
+            <div class="promo-tag">Strong materials · trusted performance</div>
+        </section>
+        <section class="promo dinner banner-slide">
+            <div class="wrap">
+                <div class="promo-content">
+                    <div class="promo-kicker">Roxx Crockery · Yera Glass</div>
+                    <h2>Make every meal
+                        <span>feel special.</span>
+                    </h2>
+                    <p>Bring colour, character and elegance to the table with our curated range of crockery and glassware for everyday moments and celebrations.</p>
+                    <a class="promo-btn" href="#contact">Explore Tableware →</a>
+                </div>
+            </div>
+            <div class="promo-tag">Beautiful tables · memorable moments</div>
+        </section>
+    </main>
+    <section id="brands" class="section">
+        <div class="wrap">
+            <div class="section-header">
+                <h2>Products &amp; Services</h2>
+                <p>Explore our premium portfolio of authorised brands bringing enduring quality, durability, and elegance across home, kitchen, and lifestyle.</p>
+            </div>
+            <div id="productGrid" class="product-grid">
+                <!-- Row 1 Initial Products -->
+                <article class="product-card">
+                    <div class="product-img-box">
+                        <img src="content/images/products/01_havells_fans.jpg" alt="Havells Fans">
+                    </div>
+                    <div class="product-info">
+                        <h3>Havells Fans</h3>
+                        <p>High-performance ceiling, pedestal, and wall fans blending state-of-the-art motor technology with elegant aesthetics.</p>
+                        <a class="product-btn" href="tel:+919646464604">Enquire Now &rarr;</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-img-box">
+                        <img src="content/images/products/02_havells_appliances.jpg" alt="Havells Appliances">
+                    </div>
+                    <div class="product-info">
+                        <h3>Havells Appliances</h3>
+                        <p>Premium small domestic appliances including mixer grinders, electric irons, kettles, and kitchen essentials.</p>
+                        <a class="product-btn" href="tel:+919646464604">Enquire Now &rarr;</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-img-box">
+                        <img src="content/images/products/03_prabha_steel.jpeg" alt="Prabha Steel">
+                    </div>
+                    <div class="product-info">
+                        <h3>Prabha Steel</h3>
+                        <p>Heavy-gauge stainless steel cookware and pressure cookers designed for durability, even heat distribution, and healthy cooking.</p>
+                        <a class="product-btn" href="tel:+919646464604">Enquire Now &rarr;</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="wrap">
+            <div class="section-header">
+                <h2>Product Gallery</h2>
+                <p>A visual showcase of our premium cookware, glassware, appliances, and luxury home living collections.</p>
+            </div>
+            <div id="galleryGrid" class="gallery-grid">
+                <!-- Initial items loaded; remaining items loaded dynamically with skeleton shimmer -->
+                <div class="gallery-item">
+                    <img src="content/images/gallery/gallery_01.jpeg" alt="Arora Agency Showcase">
+                    <div class="gallery-overlay"><span>Cookware &amp; Steel</span></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="content/images/gallery/gallery_02.jpg" alt="Premium Kitchen Collection">
+                    <div class="gallery-overlay"><span>Kitchen Essentials</span></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="content/images/gallery/gallery_03.jpg" alt="Dining and Tableware">
+                    <div class="gallery-overlay"><span>Tableware</span></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="content/images/gallery/gallery_04.jpg" alt="Glassware Collection">
+                    <div class="gallery-overlay"><span>Glassware</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="contact-section">
+        <div class="wrap">
+            <div class="section-header">
+                <h2>Contact Us</h2>
+                <p>Have questions about dealership, distribution, or bulk requirements? Get in touch with our team in Ludhiana.</p>
+            </div>
+            <div class="contact-wrap">
+                <div class="contact-info-card">
+                    <h3>Get In Touch</h3>
+                    <p>We are authorized distributors of premium domestic brands. Reach out directly for dealer inquiries, product availability, or catalog requests.</p>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="contact-item-text">
+                            <b>Our Address</b>
+                            <span>Hambra Road, Near Bhuler Moter, Haibowal Kala, Ludhiana</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="contact-item-text">
+                            <b>Call Us Directly</b>
+                            <a href="tel:+919646464604">+91 9646464604</a>, <a href="tel:+919814364077">+91 9814364077</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="contact-item-text">
+                            <b>Email Enquiries</b>
+                            <a href="mailto:aroraagency261@gmail.com">aroraagency261@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="social-ctas">
+                        <a class="btn-wa" href="https://api.whatsapp.com/send?phone=+919646464604&text=Hi%20Arora%20Agency,%20I%20am%20interested%20in%20your%20products" target="_blank" rel="noopener">
+                            <i class="fa-brands fa-whatsapp" style="font-size:18px;"></i> Chat on WhatsApp
+                        </a>
+                        <a class="product-btn" href="tel:+919646464604"><i class="fa-solid fa-phone" style="margin-right:4px;"></i> Call +91 9646464604</a>
+                        <a class="product-btn" href="tel:+919814364077"><i class="fa-solid fa-phone" style="margin-right:4px;"></i> Call +91 9814364077</a>
+                    </div>
+                </div>
+
+                <div class="contact-form-card">
+                    <h3>Send An Enquiry</h3>
+                    <form onsubmit="event.preventDefault(); alert('Thank you! Your enquiry has been received. We will contact you shortly.'); this.reset();">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Enter 10-digit mobile number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Brand / Product Interest</label>
+                            <select id="category" class="form-control">
+                                <option value="Havells">Havells Fans &amp; Appliances</option>
+                                <option value="Prabha Steel">Prabha Steel Cookware</option>
+                                <option value="Roxx Crockery">Roxx Crockery &amp; Tableware</option>
+                                <option value="Yera Glass">Yera Glassware</option>
+                                <option value="Pigeon">Pigeon Appliances</option>
+                                <option value="Other">Other / Bulk Dealership</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" class="form-control" placeholder="Tell us about your requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Enquiry &rarr;</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a class="brand" href="#top" style="margin-bottom:16px;">
+                        <img src="content/images/logo/logo.png" alt="Arora Agency" style="height:60px;">
+                    </a>
+                    <p>Authorised distributors delivering trusted lifestyle, kitchen, and home solutions from India's leading brands to homes and businesses across Punjab since 2004.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#top">Home</a></li>
+                        <li><a href="#brands">Products &amp; Services</a></li>
+                        <li><a href="#gallery">Product Gallery</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Top Brands</h4>
+                    <ul class="footer-links">
+                        <li><a href="#brands">Havells</a></li>
+                        <li><a href="#brands">Prabha Steel</a></li>
+                        <li><a href="#brands">Roxx Crockery</a></li>
+                        <li><a href="#brands">Yera Glass</a></li>
+                        <li><a href="#brands">Pigeon Appliances</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Branch Office</h4>
+                    <p><i class="fa-solid fa-location-dot" style="color:var(--y);margin-right:8px;"></i>Hambra Road, Near Bhuler Moter,<br><span style="padding-left:18px;display:inline-block;">Haibowal Kala, Ludhiana</span></p>
+                    <p style="margin-bottom:8px;">
+                        <b>Phone:</b> <a href="tel:+919646464604" style="color:var(--y);text-decoration:none;"><i class="fa-solid fa-phone" style="margin-right:6px;"></i>+91 9646464604</a>, <a href="tel:+919814364077" style="color:var(--y);text-decoration:none;">+91 9814364077</a>
+                    </p>
+                    <p style="margin-bottom:0;">
+                        <b>Email:</b> <a href="mailto:aroraagency261@gmail.com" style="color:var(--y);text-decoration:none;"><i class="fa-solid fa-envelope" style="margin-right:6px;"></i>aroraagency261@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 Arora Agency. All rights reserved.</div>
+                <div class="footer-dev">
+                    Designed and Developed by <a href="https://punjabit.in" target="_blank" rel="noopener">Punjab IT</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal for Gallery -->
+    <div id="galleryLightbox" class="lightbox" role="dialog" aria-modal="true">
+        <div class="lightbox-box">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close Lightbox"><i class="fa-solid fa-xmark"></i></button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+            <img class="lightbox-img" id="lightboxImg" src="" alt="">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+    <script>
+        const slider = document.querySelector(".banner-slider");
+        const slides = [...document.querySelectorAll(".banner-slide")];
+        
+        // Add navigation arrows
+        const prevBtn = document.createElement("button");
+        prevBtn.id = "slidePrev";
+        prevBtn.className = "slider-arrow";
+        prevBtn.setAttribute("aria-label", "Previous Slide");
+        prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+        
+        const nextBtn = document.createElement("button");
+        nextBtn.id = "slideNext";
+        nextBtn.className = "slider-arrow";
+        nextBtn.setAttribute("aria-label", "Next Slide");
+        nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+        
+        // Add dots
+        const dotsWrap = document.createElement("div");
+        dotsWrap.className = "slider-dots";
+        slides.forEach((_, i) => {
+            const dot = document.createElement("button");
+            dot.className = `dot ${i === 0 ? "active" : ""}`;
+            dot.dataset.slide = i;
+            dot.setAttribute("aria-label", `Slide ${i + 1}`);
+            dot.onclick = () => showSlide(i);
+            dotsWrap.appendChild(dot);
+        });
+        
+        slider.appendChild(prevBtn);
+        slider.appendChild(nextBtn);
+        slider.appendChild(dotsWrap);
+
+        let activeSlide = 0;
+        let slideTimer;
+
+        function showSlide(n) {
+            activeSlide = (n + slides.length) % slides.length;
+            slides.forEach((s, i) => s.classList.toggle("active", i === activeSlide));
+            document.querySelectorAll(".slider-dots .dot").forEach((d, i) => d.classList.toggle("active", i === activeSlide));
+            resetTimer();
+        }
+
+        function resetTimer() {
+            clearInterval(slideTimer);
+            slideTimer = setInterval(() => showSlide(activeSlide + 1), 7000);
+        }
+
+        prevBtn.onclick = () => showSlide(activeSlide - 1);
+        nextBtn.onclick = () => showSlide(activeSlide + 1);
+        resetTimer();
+
+        // Progressive / Skeleton Ajax Loading for Products
+        const grid = document.getElementById("productGrid");
+        
+        function renderSkeletonCard() {
+            const card = document.createElement("article");
+            card.className = "product-card skeleton-card";
+            card.innerHTML = `
+                <div class="product-img-box">
+                    <div class="skeleton-img"></div>
+                </div>
+                <div class="product-info">
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                    <div class="skeleton-line skeleton-text short"></div>
+                    <div class="skeleton-line skeleton-btn"></div>
+                </div>
+            `;
+            return card;
+        }
+
+        function createProductCard(p) {
+            const article = document.createElement("article");
+            article.className = "product-card";
+            article.style.animation = "cardFadeIn .6s cubic-bezier(.165,.84,.44,1) both";
+            article.innerHTML = `
+                <div class="product-img-box">
+                    <img src="${p.image}" alt="${p.title}" loading="lazy">
+                </div>
+                <div class="product-info">
+                    <h3>${p.title}</h3>
+                    <p>${p.desc}</p>
+                    <a class="product-btn" href="tel:+919646464604">Enquire Now &rarr;</a>
+                </div>
+            `;
+            return article;
+        }
+
+        async function loadRemainingProducts() {
+            try {
+                // Fetch products catalog via AJAX
+                const res = await fetch("products.json");
+                const allProducts = await res.json();
+                
+                // Row 2 products (items 4, 5, 6, 7)
+                const row2Items = allProducts.slice(3, 7);
+                // Row 3 products (items 8, 9, 10)
+                const row3Items = allProducts.slice(7);
+
+                // --- STAGE 1: Show Skeleton for Row 2 ---
+                const row2Skeletons = row2Items.map(() => {
+                    const sk = renderSkeletonCard();
+                    grid.appendChild(sk);
+                    return sk;
+                });
+
+                // Simulate realistic progressive loading delay for Row 2 (e.g. 1.2s)
+                await new Promise(r => setTimeout(r, 1200));
+                
+                // Replace Row 2 skeletons with real data
+                row2Items.forEach((p, index) => {
+                    const card = createProductCard(p);
+                    grid.replaceChild(card, row2Skeletons[index]);
+                });
+
+                // --- STAGE 2: Show Skeleton for Row 3 ---
+                const row3Skeletons = row3Items.map(() => {
+                    const sk = renderSkeletonCard();
+                    grid.appendChild(sk);
+                    return sk;
+                });
+
+                // Simulate progressive loading delay for Row 3 (e.g. 1.4s)
+                await new Promise(r => setTimeout(r, 1400));
+
+                // Replace Row 3 skeletons with real data
+                row3Items.forEach((p, index) => {
+                    const card = createProductCard(p);
+                    grid.replaceChild(card, row3Skeletons[index]);
+                });
+
+            } catch (err) {
+                console.error("Error loading products via Ajax:", err);
+            }
+        }
+
+        // Progressive / Skeleton Loader for Product Gallery
+        const galleryGrid = document.getElementById("galleryGrid");
+        const remainingGalleryItems = [
+            { img: "content/images/gallery/gallery_05.jpg", title: "Premium Dinner Sets" },
+            { img: "content/images/gallery/gallery_06.jpg", title: "Pressure Cookers" },
+            { img: "content/images/gallery/gallery_07.jpg", title: "Designer Crockery" },
+            { img: "content/images/gallery/gallery_08.jpg", title: "Wooden Craft" },
+            { img: "content/images/gallery/gallery_09.jpg", title: "Clean Max Collection" },
+            { img: "content/images/gallery/gallery_10.jpg", title: "Smart Appliances" },
+            { img: "content/images/gallery/gallery_11.jpg", title: "Melamine Serveware" },
+            { img: "content/images/gallery/gallery_12.jpeg", title: "Stainless Steel Collection" }
+        ];
+
+        async function loadGallerySkeletons() {
+            // Stage 1: Append skeleton placeholders for the next batch of gallery items
+            const batch1 = remainingGalleryItems.slice(0, 4);
+            const batch2 = remainingGalleryItems.slice(4);
+
+            const batch1Skeletons = batch1.map(() => {
+                const sk = document.createElement("div");
+                sk.className = "gallery-skeleton";
+                galleryGrid.appendChild(sk);
+                return sk;
+            });
+
+            await new Promise(r => setTimeout(r, 1600));
+
+            batch1.forEach((item, i) => {
+                const el = document.createElement("div");
+                el.className = "gallery-item";
+                el.style.animation = "cardFadeIn .6s cubic-bezier(.165,.84,.44,1) both";
+                el.innerHTML = `
+                    <img src="${item.img}" alt="${item.title}" loading="lazy">
+                    <div class="gallery-overlay"><span>${item.title}</span></div>
+                `;
+                galleryGrid.replaceChild(el, batch1Skeletons[i]);
+            });
+
+            // Stage 2: Next batch of gallery skeletons
+            const batch2Skeletons = batch2.map(() => {
+                const sk = document.createElement("div");
+                sk.className = "gallery-skeleton";
+                galleryGrid.appendChild(sk);
+                return sk;
+            });
+
+            await new Promise(r => setTimeout(r, 1800));
+
+            batch2.forEach((item, i) => {
+                const el = document.createElement("div");
+                el.className = "gallery-item";
+                el.style.animation = "cardFadeIn .6s cubic-bezier(.165,.84,.44,1) both";
+                el.innerHTML = `
+                    <img src="${item.img}" alt="${item.title}" loading="lazy">
+                    <div class="gallery-overlay"><span>${item.title}</span></div>
+                `;
+                galleryGrid.replaceChild(el, batch2Skeletons[i]);
+            });
+        }
+
+        // Initialize progressive Ajax loading when user visits
+        if (window.requestIdleCallback) {
+            requestIdleCallback(() => {
+                setTimeout(loadRemainingProducts, 600);
+                setTimeout(loadGallerySkeletons, 1000);
+            });
+        } else {
+            setTimeout(loadRemainingProducts, 600);
+            setTimeout(loadGallerySkeletons, 1000);
+        }
+
+        // --- Lightbox Functionality ---
+        const lightbox = document.getElementById("galleryLightbox");
+        const lightboxImg = document.getElementById("lightboxImg");
+        const lightboxCaption = document.getElementById("lightboxCaption");
+        const lightboxClose = document.getElementById("lightboxClose");
+        const lightboxPrev = document.getElementById("lightboxPrev");
+        const lightboxNext = document.getElementById("lightboxNext");
+
+        let currentGalleryIndex = 0;
+
+        function getGalleryItemsData() {
+            const items = [...galleryGrid.querySelectorAll(".gallery-item img")];
+            return items.map(img => {
+                const overlay = img.parentElement.querySelector(".gallery-overlay span");
+                return {
+                    src: img.src,
+                    title: overlay ? overlay.innerText : img.alt
+                };
+            });
+        }
+
+        function openLightbox(index) {
+            const data = getGalleryItemsData();
+            if (!data.length) return;
+            currentGalleryIndex = (index + data.length) % data.length;
+            lightboxImg.src = data[currentGalleryIndex].src;
+            lightboxCaption.textContent = data[currentGalleryIndex].title;
+            lightbox.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove("active");
+            document.body.style.overflow = "";
+        }
+
+        function showNextImage() {
+            const data = getGalleryItemsData();
+            openLightbox(currentGalleryIndex + 1);
+        }
+
+        function showPrevImage() {
+            const data = getGalleryItemsData();
+            openLightbox(currentGalleryIndex - 1);
+        }
+
+        // Delegate click for both initial and dynamically loaded gallery items
+        galleryGrid.addEventListener("click", (e) => {
+            const item = e.target.closest(".gallery-item");
+            if (!item) return;
+            const allItems = [...galleryGrid.querySelectorAll(".gallery-item")];
+            const idx = allItems.indexOf(item);
+            if (idx !== -1) {
+                openLightbox(idx);
+            }
+        });
+
+        lightboxClose.onclick = closeLightbox;
+        lightboxNext.onclick = showNextImage;
+        lightboxPrev.onclick = showPrevImage;
+
+        // Close on backdrop click
+        lightbox.onclick = (e) => {
+            if (e.target === lightbox) closeLightbox();
+        };
+
+        // Keyboard navigation (Escape, ArrowLeft, ArrowRight)
+        document.addEventListener("keydown", (e) => {
+            if (!lightbox.classList.contains("active")) return;
+            if (e.key === "Escape") closeLightbox();
+            if (e.key === "ArrowRight") showNextImage();
+            if (e.key === "ArrowLeft") showPrevImage();
+        });
+    </script>
+</body>
+</html>

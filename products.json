@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Havells Fans",
+    "image": "content/images/products/01_havells_fans.jpg",
+    "desc": "High-performance ceiling, pedestal, and wall fans blending state-of-the-art motor technology with elegant aesthetics."
+  },
+  {
+    "id": 2,
+    "title": "Havells Appliances",
+    "image": "content/images/products/02_havells_appliances.jpg",
+    "desc": "Premium small domestic appliances including mixer grinders, electric irons, kettles, and kitchen essentials."
+  },
+  {
+    "id": 3,
+    "title": "Prabha Steel",
+    "image": "content/images/products/03_prabha_steel.jpeg",
+    "desc": "Heavy-gauge stainless steel cookware and pressure cookers designed for durability, even heat distribution, and healthy cooking."
+  },
+  {
+    "id": 4,
+    "title": "Roxx Crockery",
+    "image": "content/images/products/04_roxx_crockery.jpg",
+    "desc": "Exquisite dinner sets and ceramic tableware that add timeless charm, vibrancy, and sophistication to your dining experience."
+  },
+  {
+    "id": 5,
+    "title": "Yera Glass",
+    "image": "content/images/products/05_yera_glass.jpg",
+    "desc": "Crystal-clear, durable glassware including tumblers, bowls, jugs, and storage containers for everyday refreshment."
+  },
+  {
+    "id": 6,
+    "title": "Shri & Sam Cutlery & Steel",
+    "image": "content/images/products/06_shri_sam_cutlery.jpg",
+    "desc": "Artisanal stainless steel cutlery, barware, and premium serveware built with exceptional craftsmanship."
+  },
+  {
+    "id": 7,
+    "title": "Pigeon Appliances",
+    "image": "content/images/products/07_pigon_appliances.jpeg",
+    "desc": "Smart and reliable kitchen solutions including gas stoves, sandwich makers, induction cooktops, and air fryers."
+  },
+  {
+    "id": 8,
+    "title": "KVG Wooden",
+    "image": "content/images/products/08_kvg_wooden.jpg",
+    "desc": "Handcrafted wooden chopping boards, platters, and kitchen tools crafted from premium seasoned natural wood."
+  },
+  {
+    "id": 9,
+    "title": "Joyo Clean Max",
+    "image": "content/images/products/09_joyo_clean_max.jpg",
+    "desc": "Ergonomic cleaning accessories, plastic household utilities, and modern hygiene solutions for neat and organized homes."
+  },
+  {
+    "id": 10,
+    "title": "ST Stehlen Melamine",
+    "image": "content/images/products/10_st_stehlem_malamine.jpg",
+    "desc": "100% pure food-grade melamine dinner sets, snack trays, and serving bowls that are break-resistant and stain-proof."
+  }
+]

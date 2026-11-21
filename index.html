@@ -25,8 +25,11 @@
                 transition:all .3s ease;
             }
             .nav{height:95px;display:flex;align-items:center;justify-content:space-between;position:relative}
-            .brand{display:flex;align-items:center;text-decoration:none}
-            .brand img{height:80px;width:auto;border-radius:50%;object-fit:contain;display:block;transition:height .3s ease}
+            .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+            .brand img{height:72px;width:auto;border-radius:50%;object-fit:contain;display:block;transition:height .3s ease}
+            .brand-name{display:flex;flex-direction:column;line-height:1.15}
+            .brand-name .title{font-size:22px;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase}
+            .brand-name .sub{font-size:11px;font-weight:600;color:var(--y);letter-spacing:2px;text-transform:uppercase}
             .links{display:flex;gap:45px}
             .links a{color:#fff;text-decoration:none;transition:color .2s}
             .links a:hover{color:var(--y)}
@@ -299,7 +302,10 @@
                     color:var(--y);
                 }
                 .nav{height:72px}
-                .brand img{height:54px}
+                .brand{gap:10px}
+                .brand img{height:48px}
+                .brand-name .title{font-size:18px}
+                .brand-name .sub{font-size:9.5px;letter-spacing:1.5px}
                 
                 /* Hero / Promo Mobile Layout with Visible Product Visuals */
                 .promo{
@@ -366,7 +372,10 @@
                 .nav{height:66px}
                 .nav-toggle{font-size:22px;padding:6px}
                 .links{top:0;height:100vh;width:240px;padding-top:72px}
-                .brand img{height:46px}
+                .brand{gap:8px}
+                .brand img{height:42px}
+                .brand-name .title{font-size:16px}
+                .brand-name .sub{font-size:8.5px;letter-spacing:1px}
                 .nav .call{padding:6px 12px;font-size:11px;margin-right:8px}
                 .promo{
                     padding:28px 0 16px;
@@ -387,6 +396,10 @@
         <div class="nav wrap">
             <a class="brand" href="#top" aria-label="Arora Agency">
                 <img src="content/images/logo/logo.png" alt="Arora Agency">
+                <div class="brand-name">
+                    <span class="title">Arora Agency</span>
+                    <span class="sub">5 Star Agencies</span>
+                </div>
             </a>
             <nav id="navLinks" class="links">
                 <a href="#brands">Products &amp; Services</a>
@@ -608,7 +621,11 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <a class="brand" href="#top" style="margin-bottom:16px;">
-                        <img src="content/images/logo/logo.png" alt="Arora Agency" style="height:60px;">
+                        <img src="content/images/logo/logo.png" alt="Arora Agency" style="height:56px;">
+                        <div class="brand-name">
+                            <span class="title" style="font-size:20px;">Arora Agency</span>
+                            <span class="sub" style="font-size:10px;">5 Star Agencies</span>
+                        </div>
                     </a>
                     <p>Authorised distributors delivering trusted lifestyle, kitchen, and home solutions from India's leading brands to homes and businesses across Punjab since 2004.</p>
                 </div>

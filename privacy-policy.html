@@ -15,8 +15,11 @@
         /* Sticky Header */
         .header-sticky{position:sticky;top:0;z-index:100;background:rgba(5,6,7,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #ffffff18;transition:padding .3s ease}
         .nav{height:95px;display:flex;align-items:center;justify-content:space-between;position:relative}
-        .brand{display:flex;align-items:center;text-decoration:none}
-        .brand img{height:80px;width:auto;border-radius:50%;object-fit:contain;display:block;transition:height .3s ease}
+        .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+        .brand img{height:72px;width:auto;border-radius:50%;object-fit:contain;display:block;transition:height .3s ease}
+        .brand-name{display:flex;flex-direction:column;line-height:1.15}
+        .brand-name .title{font-size:22px;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase}
+        .brand-name .sub{font-size:11px;font-weight:600;color:var(--y);letter-spacing:2px;text-transform:uppercase}
         .links{display:flex;gap:45px}
         .links a{color:#fff;text-decoration:none;transition:color .2s;font-size:14px}
         .links a:hover{color:var(--y)}
@@ -61,6 +64,10 @@
         <div class="nav wrap">
             <a class="brand" href="index.html" aria-label="Arora Agency">
                 <img src="content/images/logo/logo.png" alt="Arora Agency">
+                <div class="brand-name">
+                    <span class="title">Arora Agency</span>
+                    <span class="sub">5 Star Agencies</span>
+                </div>
             </a>
             <nav class="links">
                 <a href="index.html#brands">Products &amp; Services</a>
@@ -133,6 +140,10 @@
                 <div class="footer-col">
                     <a class="brand" href="index.html" style="margin-bottom:14px;">
                         <img src="content/images/logo/logo.png" alt="Arora Agency" style="height:54px;">
+                        <div class="brand-name">
+                            <span class="title" style="font-size:20px;">Arora Agency</span>
+                            <span class="sub" style="font-size:10px;">5 Star Agencies</span>
+                        </div>
                     </a>
                     <p>Authorised distributors delivering trusted lifestyle, kitchen, and home solutions from India's leading brands across Punjab since 2004.</p>
                 </div>
